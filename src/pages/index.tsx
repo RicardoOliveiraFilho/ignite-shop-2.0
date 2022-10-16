@@ -1,4 +1,4 @@
-import { GetServerSideProps } from "next";
+import { GetStaticProps } from "next";
 import Image from "next/future/image";
 
 import { useKeenSlider } from 'keen-slider/react'
@@ -45,7 +45,12 @@ export default function Home({ products }: HomeProps) {
   )
 }
 
-export const getServerSideProps: GetServerSideProps = async () => {
+/*
+  getStaticProps: Chamada no momento do build e no completar de cada ciclo do revalidate! Ficamos também sem acesso ao contexto da requisição! (req, res e etc...)
+  getServerSideProps: Chamada a cada requisição a API! Possuímos o acesso ao contexto!
+  Ambas executadas no servidor Node (Server side) do Next!
+*/
+export const getStaticProps: GetStaticProps = async () => {
   const response = await stripe.products.list({
     expand: ['data.default_price']
   })
@@ -64,6 +69,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
   return {
     props: {
       products,
-    }
+    },
+    revalidate: 60 * 60 * 2, /*O Next revalida a página e a recria por baixo do panos ao passar o tempo informado, que será medido em segundos (O tempo passado foi de 2 horas!)*/
   }
 }
