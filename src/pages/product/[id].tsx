@@ -1,4 +1,4 @@
-import { GetStaticProps } from "next"
+import { GetStaticPaths, GetStaticProps } from "next"
 import Image from "next/future/image"
 import Stripe from "stripe"
 import { stripe } from "../../lib/stripe"
@@ -33,6 +33,22 @@ export default function Product({ product }: ProductProps) {
       </ProductDetails>
     </ProductContainer>
   )
+}
+
+/*
+  Quando temos páginas estáticas que possuem parâmetros, como é o nosso caso, nós precisamos da 'getStaticPaths'.
+  Sempre a utilizaremos para informar ao Next quais serão os parâmetros que a página que desejamos gerar estaticamente precisa.
+*/
+export const getStaticPaths: GetStaticPaths = async () => {
+  /*
+    Apesar de podermos informar os parâmetros de forma direta, temos também outras maneiras.
+  */
+  return {
+    paths: [
+      { params: { id: 'prod_Mcks9Dc2s2h2Wm' } }
+    ],
+    fallback: false,
+  }
 }
 
 /*
