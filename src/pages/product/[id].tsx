@@ -12,6 +12,7 @@ interface ProductProps {
     imageUrl: string
     price: string
     description: string
+    defaultPriceId: string
   }
 }
 
@@ -22,6 +23,11 @@ export default function Product({ product }: ProductProps) {
     return <p>Loading...</p> /* O ideal aqui é que se retorne uma Skeleton Screen! */
   }
   
+  // Função que se encarregará de chamar a API Route de pagamento!
+  function handleBuyProduct() {
+    console.log(product.defaultPriceId)
+  }
+
   return (
     <ProductContainer>
       <ImageContainer>
@@ -34,7 +40,7 @@ export default function Product({ product }: ProductProps) {
 
         <p>{product.description}</p>
 
-        <button>
+        <button onClick={handleBuyProduct}>
             Comprar Agora
         </button>
       </ProductDetails>
@@ -99,7 +105,8 @@ export const getStaticProps: GetStaticProps<any, { id: string }> = async ({ para
           style: 'currency',
           currency: 'BRL'
         }).format(price.unit_amount / 100),
-        description: product.description
+        description: product.description,
+        defaultPriceId: price.id, // Possibilitará a API Route de obter o id do Produto!
       }
     },
     revalidate: 60 * 60 * 1, // 1 Hora
