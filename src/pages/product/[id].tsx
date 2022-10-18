@@ -1,5 +1,6 @@
 import { GetStaticPaths, GetStaticProps } from "next"
 import Image from "next/future/image"
+import { useRouter } from "next/router"
 import Stripe from "stripe"
 import { stripe } from "../../lib/stripe"
 import { ImageContainer, ProductContainer, ProductDetails } from "../../styles/pages/product"
@@ -15,6 +16,12 @@ interface ProductProps {
 }
 
 export default function Product({ product }: ProductProps) {
+  const { isFallback } = useRouter()
+
+  if (isFallback) {
+    return <p>Loading...</p> /* O ideal aqui é que se retorne uma Skeleton Screen! */
+  }
+  
   return (
     <ProductContainer>
       <ImageContainer>
@@ -47,7 +54,15 @@ export const getStaticPaths: GetStaticPaths = async () => {
     paths: [
       { params: { id: 'prod_Mcks9Dc2s2h2Wm' } }
     ],
-    fallback: false,
+    /*
+      Estando 'false', o Next nos retornará a página 404!
+      Estando 'true', o Next tentará obter as informações pegando os parâmetros que não foram informados no 'paths'
+      e tentará gerar a pagina estática com base neles.
+      Aqui tem um porém, pois o Next exibirá a tela (O componente React e seu HTML) para só então ir atrás de suas informações.
+      Nesses casos o ideal é ter também uma informação de loading!!! Veja o isFallback acima!
+      NOTA: há também a opção de 'blocking', mas ela não é recomendada pois ela não exibirá nada até o Next ter os dados da página. Isso não dará uma boa experiência ao usuário.
+    */
+    fallback: true,
   }
 }
 
