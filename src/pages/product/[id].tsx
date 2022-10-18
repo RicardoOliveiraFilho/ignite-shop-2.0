@@ -1,6 +1,8 @@
+import axios from "axios"
 import { GetStaticPaths, GetStaticProps } from "next"
 import Image from "next/future/image"
 import { useRouter } from "next/router"
+import { useState } from "react"
 import Stripe from "stripe"
 import { stripe } from "../../lib/stripe"
 import { ImageContainer, ProductContainer, ProductDetails } from "../../styles/pages/product"
@@ -18,14 +20,44 @@ interface ProductProps {
 
 export default function Product({ product }: ProductProps) {
   const { isFallback } = useRouter()
+  const [isCreatingCheckoutSession, setIsCreatingCheckoutSession] = useState(false)
 
   if (isFallback) {
     return <p>Loading...</p> /* O ideal aqui é que se retorne uma Skeleton Screen! */
   }
   
   // Função que se encarregará de chamar a API Route de pagamento!
-  function handleBuyProduct() {
-    console.log(product.defaultPriceId)
+  async function handleBuyProduct() {
+    try {
+      setIsCreatingCheckoutSession(true)
+
+      // Como a API está rodando no mesmo endereço que a nossa aplicação, precisamos apenas informar o resto da rota!
+      const response = await axios.post('/api/checkout', {
+        priceId: product.defaultPriceId, // Passamos a informação desejada para a rota!
+      })
+
+      // Obtermos o retorno de nossa API Route
+      const { checkoutUrl } = response.data
+
+      /*
+        Como se trata de um redirecionamento para um endereço externo à nossa aplicação,
+        utilizamos a instrução a seguir...
+      */
+      window.location.href = checkoutUrl
+
+      /*
+        Caso o endereço fosse interno à nossa aplicação (uma page, por exemplo)
+        utilizaríamos o 'useRouter()' pegando seu retorno e usando o método 'push'.
+        
+        const route = useRouter()
+        route.push('endereço_rota')
+      */
+    } catch (error) {
+      setIsCreatingCheckoutSession(false)
+
+      // O ideal seria conectar a uma ferramente de observabilidade (Datadog / Sentry)
+      alert('Falha ao redirecionar ao checkout')
+    }
   }
 
   return (
@@ -40,7 +72,7 @@ export default function Product({ product }: ProductProps) {
 
         <p>{product.description}</p>
 
-        <button onClick={handleBuyProduct}>
+        <button disabled={isCreatingCheckoutSession} onClick={handleBuyProduct}>
             Comprar Agora
         </button>
       </ProductDetails>
