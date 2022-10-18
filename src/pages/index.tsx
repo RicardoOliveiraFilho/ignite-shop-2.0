@@ -30,12 +30,20 @@ export default function Home({ products }: HomeProps) {
     }
   })
 
+  /*
+    prefetch - O Next faz um prévio carregamento (Intersection Observer) de todos os
+    links presentes na página e visíveis em tela (Não ocorre no ambiente de desenvolvimento).
+    Isso faz com que quando o usuário clicar no link o carregamento da página ocorra mais rápido!
+    Para tomar cuidado com isso e evitar uma sobrecarga no servidor caso a página tenha muitos links,
+    podemos passar 'prefetch={false}' para informar ao Next para fazer isso apenas no momento do Hover no link!
+  */
   return (
     <HomeContainer ref={sliderRef} className="keen-slider">
       {products.map(product => (
         <Link
           key={product.id}
           href={`/product/${product.id}`}
+          prefetch={false}
         >
           <Product className="keen-slider__slide">
             <Image src={product.imageUrl} width={520} height={480} alt="" />
