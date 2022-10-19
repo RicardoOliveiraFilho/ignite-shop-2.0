@@ -35,6 +35,16 @@ export default function Success({ customerName, product }: SuccessProps) {
 }
 
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
+  // Redirect realizado pelo Next.js no server side!
+  if (!query.session_id) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      }
+    }
+  }
+  
   const sessionId = String(query.session_id)
 
   // Tudo relacionado ao expand foi visto na documentação do Stripe
