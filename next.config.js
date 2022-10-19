@@ -10,6 +10,7 @@ const nextConfig = {
   },
 
   experimental: {
+    newNextLinkBehavior: true, // Ainda experimental o lance do 'Link' não precisar do elemento 'a' como filho!
     images: {
       allowFutureImage: true,
     },
