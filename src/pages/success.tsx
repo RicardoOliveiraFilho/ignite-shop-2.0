@@ -1,5 +1,6 @@
 import { GetServerSideProps } from "next";
 import Image from "next/future/image";
+import Head from "next/head";
 import Link from "next/link";
 import Stripe from "stripe";
 import { stripe } from "../lib/stripe";
@@ -15,22 +16,31 @@ interface SuccessProps {
 
 export default function Success({ customerName, product }: SuccessProps) {
   return (
-    <SuccessContainer>
-      <h1>Compra efetuada!</h1>
+    <>
+      <Head>
+        <title>Compra efetuada | Ignite Shop</title>
 
-      <ImageContainer>
-        <Image src={product.imageUrl} width={120} height={110} alt="" />
-      </ImageContainer>
+        {/* Falamos para os Crawlers não indexarem essa página */}
+        <meta name="robots" content="noindex" />
+      </Head>
 
-      <p>
-        Uhuul <strong>{customerName}</strong>, sua <strong>{product.name}</strong> já está a caminho da sua casa.
-      </p>
+      <SuccessContainer>
+        <h1>Compra efetuada!</h1>
 
-      {/* A partir da versão 12 do Next.js não é mais necessário o componente 'Link' ter o elemento 'a' como filho. */}
-      <Link href="/">
-        Voltar ao catálogo
-      </Link>
-    </SuccessContainer>
+        <ImageContainer>
+          <Image src={product.imageUrl} width={120} height={110} alt="" />
+        </ImageContainer>
+
+        <p>
+          Uhuul <strong>{customerName}</strong>, sua <strong>{product.name}</strong> já está a caminho da sua casa.
+        </p>
+
+        {/* A partir da versão 12 do Next.js não é mais necessário o componente 'Link' ter o elemento 'a' como filho. */}
+        <Link href="/">
+          Voltar ao catálogo
+        </Link>
+      </SuccessContainer>
+    </>
   )
 }
 
