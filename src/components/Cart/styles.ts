@@ -30,3 +30,111 @@ export const CartClose = styled(Dialog.Close, {
   top: '1.75rem',
   right: '1.75rem',
 })
+
+export const CartProduct = styled('div', {
+  width: '100%',
+  display: 'flex',
+  gap: '1.25rem',
+  alignItems: 'center',
+  height: '5.8125rem',
+})
+
+export const CartProductImage = styled('div', {
+  width: '6.3125rem',
+  height: '5.8125rem',
+  background: 'linear-gradient(180deg, #1EA483 0%, #7465D4 100%)',
+
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+
+  borderRadius: 8,
+
+  img: {
+    objectFit: 'cover'
+  }
+})
+
+export const CartProductDetails = styled('div', {
+  display: 'flex',
+  flexDirection: 'column',
+  height: '100%',
+
+  p: {
+    color: '$gray300',
+    fontSize: '$md',
+  },
+
+  strong: {
+    marginTop: 4,
+    fontSize: '$md',
+    fontWeight: 700
+  },
+
+  button: {
+    marginTop: 'auto',
+    width: 'max-content',
+    background: 'none',
+    border: 'none',
+    color: '$green500',
+    fontSize: '1rem',
+    fontWeight: 700
+  }
+})
+
+export const CartFinalization = styled('div', {
+  display: 'flex',
+  flexDirection: 'column',
+  marginTop: 'auto', // Técnica de 'auto' levar o elemento o máximo que der, só funciona em flex layout!
+
+  button: {
+    width: '100%',
+    background: '$green500',
+    color: '$white',
+    fontSize: '$md',
+    height: '4.3125rem',
+    border: 'none',
+    borderRadius: 8,
+    fontWeight: 700,
+
+    '&:disabled': {
+      opacity: 0.6,
+      cursor: 'not-allowed',
+    },
+
+    '&:not(:disabled):hover': {
+      background: '$green300',
+    },
+  }
+})
+
+export const FinalizationDetails = styled('section', {
+  display: 'flex',
+  flexDirection: 'column',
+  gap: 8,
+  marginBottom: 55,
+
+  div: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+
+    p: {
+      fontSize: '$md',
+      color: '$gray300',
+    },
+
+    '&:last-child': {
+      fontWeight: 'bold',
+
+      span: {
+        fontSize: '$md',
+      },
+
+      p: {
+        color: '$gray100',
+        fontSize: '$xl'
+      },
+    },
+  },
+})
