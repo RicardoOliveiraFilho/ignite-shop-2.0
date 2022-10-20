@@ -1,3 +1,4 @@
+import { MouseEvent } from 'react'
 import { GetStaticProps } from "next";
 import Head from "next/head";
 import Image from "next/future/image";
@@ -10,16 +11,11 @@ import { stripe } from "../lib/stripe";
 
 import { HomeContainer, Product, SliderContainer } from "../styles/pages/home";
 import { CartButton } from "../components/CartButton";
-
-interface Product {
-  id: string
-  name: string
-  imageUrl: string
-  price: string
-}
+import { useCart } from "../hooks/useCart";
+import { IProduct } from "../contexts/CartContext";
 
 interface HomeProps {
-  products: Product[]
+  products: IProduct[]
 }
 
 export default function Home({ products }: HomeProps) {
@@ -28,6 +24,13 @@ export default function Home({ products }: HomeProps) {
     skipSnaps: false,
     dragFree: true
   })
+
+  const { addToCart, checkIfItemAlreadyExists } = useCart()
+
+  function handleAddToCart(e: MouseEvent<HTMLButtonElement>, product: IProduct) {
+    e.preventDefault()
+    addToCart(product)
+  }
 
   /*
     prefetch - O Next faz um prévio carregamento (Intersection Observer) de todos os
@@ -60,7 +63,12 @@ export default function Home({ products }: HomeProps) {
                         <strong>{product.name}</strong>
                         <span>{product.price}</span>
                       </div>
-                      <CartButton color="green" size="large" />
+                      <CartButton
+                        color="green"
+                        size="large"
+                        disabled={checkIfItemAlreadyExists(product.id)}
+                        onClick={(e) => handleAddToCart(e, product)}
+                      />
                     </footer>
                   </Product>
                 </Link>
@@ -93,7 +101,9 @@ export const getStaticProps: GetStaticProps = async () => {
       price: new Intl.NumberFormat('pt-BR', {
         style: 'currency',
         currency: 'BRL'
-      }).format(price.unit_amount / 100) /*unit_amount vem em centavos*/
+      }).format(price.unit_amount / 100) /*unit_amount vem em centavos*/,
+      numberPrice: price.unit_amount / 100,
+      defaultPriceId: price.id,
     }
   })
 
