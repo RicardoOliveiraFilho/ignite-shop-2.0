@@ -59,7 +59,7 @@ export function Cart() {
                 <p>{cartTotalFormatted}</p>
               </div>
             </FinalizationDetails>
-            <button>Finalizar compra</button>
+            <button disabled={cartQuantity <= 0}>Finalizar compra</button>
           </CartFinalization>
         </CartContent>
       </Dialog.Portal>
