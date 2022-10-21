@@ -18,7 +18,7 @@ export default function Product({ product }: ProductProps) {
   const { addToCart, checkIfItemAlreadyExists } = useCart()
 
   if (isFallback) {
-    return <p>Loading...</p> /* O ideal aqui é que se retorne uma Skeleton Screen! */
+    return <p>Loading...</p>
   }
 
   const itemAlreadyInCart = checkIfItemAlreadyExists(product.id)
@@ -49,44 +49,15 @@ export default function Product({ product }: ProductProps) {
   )
 }
 
-/*
-  Quando temos páginas estáticas que possuem parâmetros, como é o nosso caso, nós precisamos da 'getStaticPaths'.
-  Sempre a utilizaremos para informar ao Next quais serão os parâmetros que a página que desejamos gerar estaticamente precisa.
-*/
 export const getStaticPaths: GetStaticPaths = async () => {
-  /*
-    Apesar de podermos informar os parâmetros de forma direta, temos também outras maneiras.
-  */
   return {
     paths: [
       { params: { id: 'prod_Mcks9Dc2s2h2Wm' } }
     ],
-    /*
-      Estando 'false', o Next nos retornará a página 404!
-      Estando 'true', o Next tentará obter as informações pegando os parâmetros que não foram informados no 'paths'
-      e tentará gerar a pagina estática com base neles.
-      Aqui tem um porém, pois o Next exibirá a tela (O componente React e seu HTML) para só então ir atrás de suas informações.
-      Nesses casos o ideal é ter também uma informação de loading!!! Veja o isFallback acima!
-      NOTA: há também a opção de 'blocking', mas ela não é recomendada pois ela não exibirá nada até o Next ter os dados da página. Isso não dará uma boa experiência ao usuário.
-    */
     fallback: true,
   }
 }
 
-/*
-  Poderíamos carregar os dados do produto como já visto, utilizando useEffect. Obtendo suas informações a partir do parâmetro 'query'.
-  Mas vimos também que há um risco nessa abordagem, caso o Javascript seja desabilitado no navegador os dados nem serão obtidos e muito menos vistos.
-  E ainda por cima, indexadores, bots não conseguirão carregar esses dados ao visualizarem a página.
-
-  A melhor forma de carregar esses dados é com alguma função server-side já vista (SSR ou SSG).
-  Para saber qual usar, há algumas perguntas a serem respondidas:
-  1.) Os dados carregados serão atemporais (Serem mantidos em cache por um tempo)?
-      Se sim a escolha é SSG, se não a escolha é SSR!
-  2.) Os dados carregados dependem de alguma informação do contexto de execução da página (Cookies, Usuário logado ou outra informação em tempo real)?
-      Se sim a escolha é SSR, se não a escolha é SSG!
-  
-  Nesse nosso caso da página de produto, a escolha será SSG!
-*/
 export const getStaticProps: GetStaticProps<any, { id: string }> = async ({ params }) => {
   const productId = params.id;
 
@@ -108,9 +79,9 @@ export const getStaticProps: GetStaticProps<any, { id: string }> = async ({ para
         }).format(price.unit_amount / 100),
         numberPrice: price.unit_amount / 100,
         description: product.description,
-        defaultPriceId: price.id, // Possibilitará a API Route de obter o id do Produto!
+        defaultPriceId: price.id,
       }
     },
-    revalidate: 60 * 60 * 1, // 1 Hora
+    revalidate: 60 * 60 * 1,
   }
 }

@@ -94,7 +94,7 @@ export const CartProductDetails = styled('div', {
 export const CartFinalization = styled('div', {
   display: 'flex',
   flexDirection: 'column',
-  marginTop: 'auto', // Técnica de 'auto' levar o elemento o máximo que der, só funciona em flex layout!
+  marginTop: 'auto',
 
   button: {
     width: '100%',

@@ -16,8 +16,6 @@ export default function Success({ customerName, productsImages }: SuccessProps) 
     <>
       <Head>
         <title>Compra efetuada | Ignite Shop</title>
-
-        {/* Falamos para os Crawlers não indexarem essa página */}
         <meta name="robots" content="noindex" />
       </Head>
 
@@ -37,7 +35,6 @@ export default function Success({ customerName, productsImages }: SuccessProps) 
           {productsImages.length >= 2 ? `${productsImages.length} camisetas` : `${productsImages.length} camiseta`} já está a caminho da sua casa.
         </p>
 
-        {/* A partir da versão 12 do Next.js não é mais necessário o componente 'Link' ter o elemento 'a' como filho. */}
         <Link href="/">
           Voltar ao catálogo
         </Link>
@@ -47,7 +44,6 @@ export default function Success({ customerName, productsImages }: SuccessProps) 
 }
 
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
-  // Redirect realizado pelo Next.js no server side!
   if (!query.session_id) {
     return {
       redirect: {
@@ -58,8 +54,6 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   }
   
   const sessionId = String(query.session_id)
-
-  // Tudo relacionado ao expand foi visto na documentação do Stripe
   const session = await stripe.checkout.sessions.retrieve(sessionId, {
     expand: ['line_items', 'line_items.data.price.product']
   })

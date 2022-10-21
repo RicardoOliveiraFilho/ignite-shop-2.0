@@ -41,7 +41,6 @@ export const ImagesContainer = styled('section', {
   alignItems: 'center',
   marginBottom: '3rem',
 
-  // O estilo é aplicada nos elementos 'div' que possui um outro elemento 'div' antes dele!
   'div + div': {
     marginLeft: 'calc(-140px / 2)',
   }
