@@ -10,6 +10,31 @@ export const HeaderContainer = styled('header', {
   alignItems: 'center',
   justifyContent: 'center',
 
+  position: 'relative',
+
+  span: {
+    position: 'absolute',
+    width: '1.5rem',
+    height: '1.5rem',
+    borderRadius: '50%',
+    border: '3px solid $gray900',
+    top: 26,
+    right: -11,
+    zIndex: 1,
+    padding: '0.75rem',
+    color: '$white',
+
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+
+    fontSize: '0.875rem',
+    fontWeight: 700,
+    lineHeight: 1.6,
+
+    background: '$green500',
+  },
+
   button: {
     marginLeft: 'auto',
   }

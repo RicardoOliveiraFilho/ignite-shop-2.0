@@ -4,10 +4,13 @@ import { HeaderContainer } from './styles'
 import logoImg from '../../assets/logo.svg'
 import { Cart } from "../Cart";
 import { useRouter } from "next/router";
+import { useCart } from "../../hooks/useCart";
 
 export function Header() {
   const { pathname } = useRouter()
   const showCartButton = pathname !== '/success'
+
+  const { cartQuantity } = useCart()
 
   return (
     <HeaderContainer>
@@ -15,7 +18,12 @@ export function Header() {
         <Image src={logoImg} alt="" />
       </Link>
 
-      {showCartButton && <Cart />}
+      {showCartButton && (
+        <>
+          {cartQuantity > 0 && <span>{cartQuantity}</span>}
+          <Cart />
+        </>
+      )}
     </HeaderContainer>
   )
 }

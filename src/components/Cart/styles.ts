@@ -3,6 +3,7 @@ import * as Dialog from '@radix-ui/react-dialog'
 
 export const CartContent = styled(Dialog.Content, {
   position: 'fixed',
+  zIndex: 2,
   top: 0,
   right: 0,
   bottom: 0,

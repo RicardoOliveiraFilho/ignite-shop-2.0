@@ -13,6 +13,7 @@ export interface IProduct {
 interface CartContextData {
   cartItems: IProduct[];
   cartTotal: number;
+  cartQuantity: number;
   addToCart: (product: IProduct) => void;
   removeCartItem: (productId: string) => void;
   checkIfItemAlreadyExists: (productId: string) => boolean;
@@ -31,6 +32,8 @@ export function CartContextProvider({ children }: CartContextProviderProps) {
     return total + product.numberPrice
   }, 0)
 
+  const cartQuantity = cartItems.length
+
   function addToCart(product: IProduct) {
     setCartItems((prevState) => [ ...prevState, product ])
   }
@@ -47,6 +50,7 @@ export function CartContextProvider({ children }: CartContextProviderProps) {
     <CartContext.Provider value={{
       cartItems,
       cartTotal,
+      cartQuantity,
       addToCart,
       removeCartItem,
       checkIfItemAlreadyExists
